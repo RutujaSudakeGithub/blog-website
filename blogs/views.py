@@ -2,6 +2,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from .models import Blog,Category,Comment
 from django.db.models import Q
+from about.models import About
+from about.models import SocailLinks
 
 
 
@@ -37,7 +39,10 @@ def blogs(request,slug):
          comment.save()
 
          return HttpResponseRedirect(request.path_info)
-
+     try:
+         about = get_object_or_404(About)
+     except:
+         about=None
 
 
     # comments
@@ -47,6 +52,7 @@ def blogs(request,slug):
           'slug_obj':slug_obj,
           'comments':comments,
           'comments_count':comments_count,
+          'about':about
      }
      return render(request,'blogs.html',context)
 
